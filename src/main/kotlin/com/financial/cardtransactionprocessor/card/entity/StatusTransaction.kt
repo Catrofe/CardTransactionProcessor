@@ -1,4 +1,4 @@
-package com.financial.cardtransactionprocessor.card.model
+package com.financial.cardtransactionprocessor.card.entity
 
 enum class StatusTransaction {
     APPROVED,

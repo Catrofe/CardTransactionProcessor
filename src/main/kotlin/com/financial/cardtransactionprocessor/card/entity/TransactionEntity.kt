@@ -1,7 +1,6 @@
 package com.financial.cardtransactionprocessor.card.entity
 
-import com.financial.cardtransactionprocessor.card.model.FlagCard
-import com.financial.cardtransactionprocessor.card.model.StatusTransaction
+import com.financial.cardtransactionprocessor.card.dto.NewTransactionProcess
 import jakarta.persistence.Column
 import jakarta.persistence.Entity
 import jakarta.persistence.EnumType
@@ -20,7 +19,7 @@ import java.util.UUID
         Index(name = "idx_merchant_id", columnList = "merchantId"),
         Index(name = "idx_created_at", columnList = "createdAt"),
         Index(name = "idx_status", columnList = "status"),
-        Index(name = "idx_flag_card", columnList = "flagCard"),
+        Index(name = "idx_brand", columnList = "brand"),
         Index(name = "idx_external_id", columnList = "externalId"),
     ]
 )
@@ -32,7 +31,7 @@ data class TransactionEntity(
     @Column(nullable = false)
     val externalId: UUID,
 
-    @Column(nullable = false, length = 20)
+    @Column(nullable = false, length = 36)
     val cardToken: String,
 
     @Column(nullable = false)
@@ -40,10 +39,10 @@ data class TransactionEntity(
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    val flagCard: FlagCard,
+    val brand: Brand,
 
     @Column(nullable = false)
-    val amount: Double,
+    val amount: Int,
 
     @Column(nullable = false)
     val currency: String,
@@ -55,19 +54,32 @@ data class TransactionEntity(
     val installments : Int,
 
     @Column(nullable = true)
-    val firstInstallmentAmount: Double?,
+    val firstInstallmentAmount: Int,
 
     @Column(nullable = true)
-    val otherInstallmentAmount: Double?,
+    val otherInstallmentAmount: Int?,
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     val status: StatusTransaction,
 
-    @Column(nullable = true)
-    val reason: String,
-
     @Column(nullable = false)
     val createdAt: LocalDateTime? = LocalDateTime.now(),
-
     )
+{
+    constructor(transaction: NewTransactionProcess, status: StatusTransaction) : this(
+        id = 0,
+        externalId = UUID.randomUUID(),
+        cardToken = transaction.cardToken,
+        merchantId = transaction.merchantId,
+        brand = transaction.brand,
+        amount = transaction.amountTransaction,
+        currency = transaction.currency,
+        isInstallment = transaction.isInstallment,
+        installments = transaction.installments,
+        firstInstallmentAmount = transaction.firstInstallmentAmount,
+        otherInstallmentAmount = transaction.otherInstallmentAmount,
+        status = status,
+        createdAt = LocalDateTime.now()
+    )
+}
