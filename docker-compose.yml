@@ -34,7 +34,7 @@ services:
     environment:
       SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/transaction_card_db
       SPRING_DATASOURCE_USERNAME: postgres
-      SPRING_DATASOURCE_PASSWORD: ~H?z4H`C1314
+      SPRING_DATASOURCE_PASSWORD: "~H?z4H`C1314"
       SPRING_PROFILES_ACTIVE: docker
       SPRING_ZIPKIN_BASEURL: http://zipkin:9411
     depends_on:
